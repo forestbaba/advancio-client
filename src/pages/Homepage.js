@@ -31,10 +31,8 @@ const Homepage = () => {
     useEffect(() => {
 
         if (!loading) {
-            console.log('ALL DATA: ', allComments.comments)
             setallComment(allComments.comments)
         }
-        console.log('>>>', isAuthenticated)
     }, [loading])
 
     useEffect(() => {
@@ -65,25 +63,18 @@ const Homepage = () => {
         realDispatch(addComment(post))
     }
     const handleDelete = id => {
-        console.log('Tes', id)
         if (window.confirm("Are you sure you want to delete this comment ?")) {
 
             realDispatch(deleteComment(id))
-            // allComment.splice(id, 1);
         }
 
 
     }
 
-    const handleEdit = ({ id, comment,item }) => {
-        console.log('==========',typeof data.userData.user.id)
-        console.log('======lll====', item)
-        console.log('LLL', typeof item.userid)
+    const handleEdit = ({ id, comment }) => {
        
         window.scrollTo(0, 0)
         setActivateUpdate(true)
-        console.log('Id:', id)
-        console.log('comm:', comment)
         setpost(comment)
         setpostId(id)
 
@@ -92,7 +83,6 @@ const Homepage = () => {
         if (post === '' || post === undefined || post === null) {
             alert('You can not submit empty field')
         } else {
-            console.log('GO ahead')
             realDispatch(updateComment({ post: post, id: postid }))
         }
     }

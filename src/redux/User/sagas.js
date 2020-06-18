@@ -52,7 +52,6 @@ function* checkLogin() {
 }
 
 function* userLogin({ payload }) {
-  console.log('=======payload:', payload)
   const loggIn = channel();
   try {
     if (payload) {
@@ -61,7 +60,6 @@ function* userLogin({ payload }) {
         password: payload.password
       }).then(res => {
         if (res) {
-          console.log('=', res.data.user.token)
           localStorage.setItem("jwtToken", res.data.user.token)
           // localStorage.removeItem("jwtToken")
           loggIn.put(actions.loginSuccess(res.data))
@@ -75,12 +73,10 @@ function* userLogin({ payload }) {
     }
 
   } catch (error) {
-    console.log('>>>>>>>>>>>>>>', Object.keys(error))
     yield put(actions.loginFailure(error));
   }
 }
 function* userSignup({ payload }) {
-  console.log('==', payload)
   const loggIn = channel();
   try {
     if (payload) {
@@ -93,16 +89,13 @@ function* userSignup({ payload }) {
         confirmPassword: payload.confirmPassword
       }).then(res => {
         if (res) {
-          console.log('=', res.data)
           localStorage.setItem("jwtToken", res.data.token)
           // localStorage.removeItem("jwtToken")
           loggIn.put(actions.signpSuccess(res.data))
         } else {
-          console.log('---', res)
         }
 
       }).catch(err => {
-        console.log('ERR: ', err.response.data)
         loggIn.put(actions.signupFailure(err.response.data))
       });
 
@@ -117,7 +110,6 @@ function* userSignup({ payload }) {
     }
 
   } catch (error) {
-    console.log('SIGNUP ERROR: ', error)
     yield put(actions.signupFailure(error));
   }
 }

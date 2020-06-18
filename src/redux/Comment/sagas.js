@@ -83,7 +83,6 @@ function* intiateFetchAllCommentReply(payload) {
 
 function* createPost(payload) {
 
-  console.log('========', payload.payload)
   const addComment = channel();
   try {
 
@@ -163,7 +162,6 @@ function* initiateDeleteComment(payload) {
 }
 
 function* initiateUpdateComment(payload) {
-  console.log('FULL payload: ', payload)
 
   const updateComment = channel();
   try {

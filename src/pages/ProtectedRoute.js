@@ -14,7 +14,6 @@ const Protected = ({ component: Component, ...rest }) => {
  
 
 useEffect(() => {
-    console.log('ISAUTH: ', isAuthenticated)
     if (isAuthenticated) {
         setCurrentUser(true)
     }

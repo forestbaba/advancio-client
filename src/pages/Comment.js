@@ -24,7 +24,6 @@ const Comment = (props) => {
 
     useEffect(() => {
         if (!loading) {
-            console.log('ALL DATA: ', allCommentReply)
             setallCommentRep(allCommentReply.comments)
         }
     }, [loading])

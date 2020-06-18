@@ -39,7 +39,6 @@ const Login = () => {
         } else if (loginDetails.password === undefined ||  loginDetails.password.length === '' || loginDetails.password.length === null)  {
             alert('Password Field is required')
         } else {
-            console.log('>>>>', loginDetails)
             setShowSpinner(true)
             realdispatch(login(loginDetails))
 

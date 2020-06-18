@@ -31,7 +31,6 @@ let history  = useHistory()
 
     }
     
-    console.log('==', isAuthenticated)
     return (
         <Header className="header">
             {

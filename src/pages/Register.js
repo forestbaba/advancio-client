@@ -20,10 +20,8 @@ const Register = () => {
     const { userData: { loggedInUser, isAuthenticated, successSignup, error } } = data
 
     useEffect(() => {
-        console.log('OOO', data.userData.error.message)
         if(data.userData.error === true){
             seterrorMsg(data.userData.error.message)
-            console.log('OOO', data.userData.error.message)
         }
       
        
