@@ -1,4 +1,4 @@
-import { all } from './Comment/node_modules/redux-saga/effectsdules/redux-saga/effects';
+import { all } from 'redux-saga/effects';
 import { userPropSaga } from './User';
 import { commentPropSaga } from './Comment'
 

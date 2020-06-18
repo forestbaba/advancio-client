@@ -55,7 +55,9 @@ export default (state = initialState, { payload, type }) => {
       return {
         ...state,
         loadingAddress: false,
-        loggedInUser: payload
+        loggedInUser: payload,
+        isAuthenticated: true
+
       };
 
     case LOG_IN_FAILURE:
@@ -75,8 +77,7 @@ export default (state = initialState, { payload, type }) => {
     case IS_LOGOUT_FAILURE:
       return {
         ...state,
-        loading: false,
-       isAuthenticated: false
+        loading: false
       };
     
     
@@ -88,13 +89,15 @@ export default (state = initialState, { payload, type }) => {
         ...state,
         successSignup: true,
         loadingAddress: false,
+        isAuthenticated: true
       };
 
     case SIGN_UP_FAILURE:
       return {
         ...state,
         successSignup: false,
-        loading: false
+        loading: false,
+        error:payload
       };
     
     

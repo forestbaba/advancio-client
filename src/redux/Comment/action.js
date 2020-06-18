@@ -3,7 +3,19 @@ import actionTypes from './actionTypes';
 const {
 	FETCH_ALL_COMMENT,
 	FETCH_ALL_COMMENT_FAILURE,
-	FETCH_ALL_COMMENT_SUCCESS
+	FETCH_ALL_COMMENT_SUCCESS,
+
+	FETCH_COMMENT_REPLY,
+	FETCH_COMMENT_REPLY_FAILURE,
+	FETCH_COMMENT_REPLY_SUCCESS,
+
+	ADD_COMMENT_REPLY,
+	ADD_COMMENT_REPLY_FAILURE,
+	ADD_COMMENT_REPLY_SUCCESS,
+	UPDATE_COMMENT,UPDATE_COMMENT_FAILURE,UPDATE_COMMENT_SUCCESS,
+
+	ADD_COMMENT, ADD_COMMENT_FAILURE, ADD_COMMENT_SUCCESS,
+	DELETE_COMMENT,DELETE_COMMENT_FAILURE,DELETE_COMMENT_SUCCESS
 } = actionTypes;
 
 
@@ -12,52 +24,82 @@ export const fetchAllComment = () => ({
 });
 
 export const fetchAllCommentSuccess = payload => ({
-	payload,
+	payload: payload.data,
 	type: FETCH_ALL_COMMENT_SUCCESS,
 });
 
 export const fetchAllCommentFailure = payload => ({
 	payload,
-	type: fetchAllCommentFailure,
+	type: FETCH_ALL_COMMENT_FAILURE,
 });
 
-// export const login = payload => ({
-// 	payload,
-// 	type: LOG_IN,
-// });
+export const fetchCommentReply = payload => ({
+	payload,
+	type: FETCH_COMMENT_REPLY,
+});
 
-// export const loginSuccess = payload => ({
-// 	payload,
-// 	type: LOG_IN_SUCCESS,
-// });
-// export const loginFailure = payload => ({
-// 	payload,
-// 	type: LOG_IN_FAILURE,
-// });
-// export const logOut = () => ({
-// 	type: IS_LOGOUT,
-// });
+export const fetchCommetReplySuccess = payload => ({
+	payload:payload.data,
+	type: FETCH_COMMENT_REPLY_SUCCESS,
+});
+export const fetchCommentReplyFailure = payload => ({
+	payload,
+	type: FETCH_COMMENT_REPLY_FAILURE,
+});
 
-// export const logOutSuccess = payload => ({
-// 	payload,
-// 	type: IS_LOGOUT_SUCCESS,
-// });
 
-// export const logOutFailure = payload => ({
-// 	payload,
-// 	type: IS_LOGOUT_FAILURE
-// });
-// export const signup = payload => ({
-// 	payload,
-// 	type: SIGN_UP,
-// });
+export const addComment = payload => ({
+	payload,
+	type: ADD_COMMENT,
+});
 
-// export const signpSuccess = payload => ({
-// 	payload,
-// 	type: SIGN_UP_SUCCESS,
-// });
+export const addCommentSuccess = payload => ({
+	payload:payload,
+	type: ADD_COMMENT_SUCCESS,
+});
+export const addCommentFailure = payload => ({
+	payload,
+	type: ADD_COMMENT_FAILURE,
+});
 
-// export const signupFailure = payload => ({
-// 	payload,
-// 	type: SIGN_UP_FAILURE
-// });
+
+export const addCommentReply = payload => ({
+	payload,
+	type: ADD_COMMENT_REPLY,
+});
+
+export const addCommentReplySuccess = payload => ({
+	payload:payload,
+	type: ADD_COMMENT_REPLY_SUCCESS,
+});
+export const addCommentReplyFailure = payload => ({
+	payload,
+	type: ADD_COMMENT_REPLY_FAILURE,
+});
+export const deleteComment = payload => ({
+	payload,
+	type: DELETE_COMMENT,
+});
+
+export const deleteCommentSuccess = payload => ({
+	payload:payload,
+	type: DELETE_COMMENT_SUCCESS,
+});
+export const deleteCommentFailure = payload => ({
+	payload,
+	type: DELETE_COMMENT_FAILURE,
+});
+
+export const updateComment = payload => ({
+	payload,
+	type: UPDATE_COMMENT,
+});
+
+export const updateCommentSuccess = payload => ({
+	payload:payload,
+	type: UPDATE_COMMENT_SUCCESS,
+});
+export const updateCommentFailure = payload => ({
+	payload,
+	type: UPDATE_COMMENT_FAILURE,
+});

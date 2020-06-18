@@ -1,7 +1,9 @@
 import actionTypes from './actionTypes';
 
 const {
-	IS_LOGGIN,LOG_IN,LOG_IN_FAILURE,LOG_IN_SUCCESS,SIGN_UP,SIGN_UP_FAILURE,SIGN_UP_SUCCESS,
+	IS_LOGGIN,
+	LOG_IN,
+	LOG_IN_FAILURE, LOG_IN_SUCCESS, SIGN_UP, SIGN_UP_FAILURE, SIGN_UP_SUCCESS,
 	IS_LOGGIN_FAILURE, IS_LOGIN_SUCCESS,
 	IS_LOGOUT, IS_LOGOUT_SUCCESS, IS_LOGOUT_FAILURE,
 	
@@ -30,7 +32,8 @@ export const login = payload => ({
 });
 
 export const loginSuccess = payload => ({
-	payload,
+
+	payload:payload,
 	type: LOG_IN_SUCCESS,
 });
 export const loginFailure = payload => ({
@@ -62,5 +65,6 @@ export const signpSuccess = payload => ({
 
 export const signupFailure = payload => ({
 	payload,
-	type: SIGN_UP_FAILURE
+	type: SIGN_UP_FAILURE,
+	
 });

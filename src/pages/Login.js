@@ -19,7 +19,7 @@ const Login = () => {
 
     useEffect(() => {
         if (isAuthenticated) {
-          history.push('/home')
+          history.push('/')
       }
     }, [isAuthenticated === false])
 
@@ -58,7 +58,7 @@ const Login = () => {
             <div className='popup_inner_signup'>
                 <div className='note-container'>
                     <h3>Login </h3>
-                    <p>Welcome to medic finder app, please create an account</p>
+                    <p>Welcome to Advancio</p>
                 </div>
 
                 <input placeholder='Email address' className='text_input' type='email' name='email' onChange={handleChange} required />

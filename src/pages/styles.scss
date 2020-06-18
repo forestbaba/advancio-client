@@ -201,11 +201,24 @@
 }
 
 .parent {
-    width: 70%;
+    width: 50%;
+    margin: auto;
+    margin-top: 20px;
+
+   
 
     .post-container{
         display: flex;
         flex-direction: column;
         width: 50%;
+
+         button {
+             width: 100px;
+             margin: 10px 0px;
+             border-width: 0px;
+             color: white;
+             background-color: #063861;
+
+         }
     }
 }

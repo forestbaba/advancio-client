@@ -6,13 +6,32 @@ import axios from "axios";
 import { BASE_URL } from '../config'
 
 const {
-  fetchAllComment, fetchAllCommentFailure, fetchAllCommentSuccess
+  fetchAllCommentFailure,
+  fetchAllCommentSuccess,
+  fetchCommentReplyFailure,
+  fetchCommetReplySuccess,
+  addComment,
+  addCommentFailure,
+  addCommentSuccess,
+
+  addCommentReplyFailure,
+  addCommentReplySuccess,
+
+  deleteCommentFailure,
+  deleteCommentSuccess,
+
+  updateCommentFailure,
+  updateCommentSuccess
 } = actions;
 
 const {
   FETCH_ALL_COMMENT,
-  FETCH_ALL_COMMENT_FAILURE,
-  FETCH_ALL_COMMENT_SUCCESS
+  FETCH_COMMENT_REPLY,
+  ADD_COMMENT,
+  ADD_COMMENT_REPLY,
+  DELETE_COMMENT,
+  UPDATE_COMMENT
+
 } = actionTypes;
 
 
@@ -26,8 +45,6 @@ function* intiateFetchAllComments() {
       }
     })
 
-
-
     while (true) {
       const action = yield take(allComments);
       yield put(action);
@@ -39,92 +56,148 @@ function* intiateFetchAllComments() {
   }
 }
 
-// function* userLogin({ payload }) {
-//   const loggIn = channel();
-//   try {
-//     if (payload) {
-//       yield authentication.signInWithEmailAndPassword(payload.email, payload.password).then(res => {
-//         dataBase.collection('users').where('uid', '==', res.user.uid).get()
-//           .then(querySnapshot => {
-//             console.log(querySnapshot)
-//             querySnapshot.docs.map(doc => {
-//               let userData = doc.data();
-//               console.log(userData)
-//               loggIn.put(actions.loginSuccess(userData));
-//             });
-//           });
+function* intiateFetchAllCommentReply(payload) {
+  let uid = parseInt(payload)
 
-//       });
-//       while (true) {
-//         const action = yield take(loggIn);
-//         yield put(action);
-//       }
-//     }
+  const allCommentReply = channel();
+  try {
+    yield axios.get(`${BASE_URL}/comments/${payload.payload}`).then(replies => {
+      if (replies) {
+        allCommentReply.put(fetchCommetReplySuccess(replies))
 
-//   } catch (error) {
-//     yield put(actions.loginFailure(error));
-//   }
-// }
-// function* userSignup({ payload }) {
-//   console.log('==', payload)
-//   const loggIn = channel();
-//   try {
-//     if (payload) {
-
-
-//       authentication.createUserWithEmailAndPassword(payload.email, payload.password)
-//         .then(user => {
-
-//           // user.user.uid
-//           dataBase.collection("users").doc(user.user.uid).set({
-//             email: payload.email,
-//             uid: user.user.uid
-//           }).then(newU => {
-//             loggIn.put(actions.signpSuccess(newU))
-//             console.log('Done')
-//           }).catch(err => {
-//             alert('Error creating user, Please try again later')
-//             //console.log('ERRX: ', err)
-//           })
-//         })
+      }
+    })
 
 
 
+    while (true) {
+      const action = yield take(allCommentReply);
+      yield put(action);
 
+    }
 
+  } catch (error) {
+    yield put(fetchCommentReplyFailure(error));
+  }
+}
 
-//       while (true) {
-//         const action = yield take(loggIn);
-//         yield put(action);
-//       }
-//     }
+function* createPost(payload) {
 
-//   } catch (error) {
-//     yield put(actions.signupFailure(error));
-//   }
-// }
-// function* userLogout() {
-//   const loggOut = channel();
-//   try {
-//     yield authentication.signOut()
-//       .then(() => {
-//         loggOut.put(actions.logOutSuccess("Logged out"))
-//       })
+  console.log('========', payload.payload)
+  const addComment = channel();
+  try {
 
-//     while (true) {
-//       const action = yield take(loggOut);
-//       yield put(action);
-//     }
+    yield axios.post(`${BASE_URL}/comments`, {
+      comment: payload.payload
+    },
+      {
+        headers: {
+          Authorization: localStorage.getItem('jwtToken')
+        }
+      }).then(post => {
+        addComment.put(addCommentSuccess(post))
 
-//   } catch (error) {
-//     yield put(actions.logOutFailure(error));
-//   }
-// }
+      })
+
+    while (true) {
+      const action = yield take(addComment);
+      yield put(action);
+
+    }
+
+  } catch (error) {
+    yield put(addCommentFailure(error));
+  }
+}
+function* initiateCommentReply(payload) {
+
+  const addComment = channel();
+  try {
+
+    yield axios.post(`${BASE_URL}/comments/reply/${payload.payload.id}`, {
+      commentReply: payload.payload.reply
+    },
+      {
+        headers: {
+          Authorization: localStorage.getItem('jwtToken')
+        }
+      }).then(post => {
+        addComment.put(addCommentReplySuccess(post))
+
+      })
+
+    while (true) {
+      const action = yield take(addComment);
+      yield put(action);
+
+    }
+
+  } catch (error) {
+    yield put(addCommentReplyFailure(error));
+  }
+}
+function* initiateDeleteComment(payload) {
+
+  const deleteComment = channel();
+  try {
+
+    yield axios.delete(`${BASE_URL}/comments/${payload.payload}`,
+      {
+        headers: {
+          Authorization: localStorage.getItem('jwtToken')
+        }
+      }).then(post => {
+        deleteComment.put(deleteCommentSuccess(post))
+
+      })
+
+    while (true) {
+      const action = yield take(deleteComment);
+      yield put(action);
+
+    }
+
+  } catch (error) {
+    yield put(deleteCommentFailure(error));
+  }
+}
+
+function* initiateUpdateComment(payload) {
+  console.log('FULL payload: ', payload)
+
+  const updateComment = channel();
+  try {
+
+    yield axios.patch(`${BASE_URL}/comments/${payload.payload.id}`, {
+      comment: payload.payload.post
+    },
+      {
+        headers: {
+          Authorization: localStorage.getItem('jwtToken')
+        }
+      }).then(post => {
+        updateComment.put(updateCommentSuccess(post))
+
+      })
+
+    while (true) {
+      const action = yield take(updateComment);
+      yield put(action);
+
+    }
+
+  } catch (error) {
+    yield put(updateCommentFailure(error));
+  }
+}
 
 export default function* commentPropSaga() {
   yield takeEvery(FETCH_ALL_COMMENT, intiateFetchAllComments);
-  // yield takeEvery(LOG_IN, userLogin);
-  // yield takeEvery(IS_LOGOUT, userLogout);
-  // yield takeEvery(SIGN_UP, userSignup);
+  yield takeEvery(FETCH_COMMENT_REPLY, intiateFetchAllCommentReply);
+  yield takeEvery(ADD_COMMENT, createPost);
+  yield takeEvery(ADD_COMMENT_REPLY, initiateCommentReply);
+  yield takeEvery(DELETE_COMMENT, initiateDeleteComment);
+  yield takeEvery(UPDATE_COMMENT, initiateUpdateComment);
+
 
 }

@@ -1,8 +1,10 @@
-import { call, put, take, takeEvery, takeLatest } from "../Comment/node_modules/redux-saga/effects";
-import { channel } from "../Comment/node_modules/redux-saga";
+import { call, put, take, takeEvery, takeLatest } from "redux-saga/effects";
+import { channel } from "redux-saga";
 import * as actions from "./action";
 import actionTypes from "./actionTypes";
 import axios from "axios";
+import { BASE_URL } from '../config';
+import jwdtDecode from 'jwt-decode';
 
 const {
   isLogin,
@@ -20,6 +22,15 @@ const {
 function* checkLogin() {
   const loggedIn = channel();
   try {
+    if (localStorage.getItem('jwtToken')) {
+      const decodedToken = jwdtDecode(localStorage.getItem('jwtToken'))
+
+      if (decodedToken.exp * 1000 < Date.now()) {
+        localStorage.removeItem('jwtToken')
+      } else {
+        loggedIn.put(isLoginSuccess(decodedToken))
+      }
+    }
     // yield authentication.onAuthStateChanged(user => {
     //   if (user) {
     //     loggedIn.put(isLoginSuccess(user))
@@ -41,21 +52,22 @@ function* checkLogin() {
 }
 
 function* userLogin({ payload }) {
+  console.log('=======payload:', payload)
   const loggIn = channel();
   try {
     if (payload) {
-      // yield authentication.signInWithEmailAndPassword(payload.email, payload.password).then(res => {
-      //   dataBase.collection('users').where('uid', '==', res.user.uid).get()
-      //     .then(querySnapshot => {
-      //       console.log(querySnapshot)
-      //       querySnapshot.docs.map(doc => {
-      //         let userData = doc.data();
-      //         console.log(userData)
-      //         loggIn.put(actions.loginSuccess(userData));
-      //       });
-      //     });
+      yield axios.post(`${BASE_URL}/users/login`, {
+        email: payload.email,
+        password: payload.password
+      }).then(res => {
+        if (res) {
+          console.log('=', res.data.user.token)
+          localStorage.setItem("jwtToken", res.data.user.token)
+          // localStorage.removeItem("jwtToken")
+          loggIn.put(actions.loginSuccess(res.data))
+        }
 
-      // });
+      });
       while (true) {
         const action = yield take(loggIn);
         yield put(action);
@@ -63,6 +75,7 @@ function* userLogin({ payload }) {
     }
 
   } catch (error) {
+    console.log('>>>>>>>>>>>>>>', Object.keys(error))
     yield put(actions.loginFailure(error));
   }
 }
@@ -73,26 +86,29 @@ function* userSignup({ payload }) {
     if (payload) {
 
 
-      // authentication.createUserWithEmailAndPassword(payload.email, payload.password)
-      //   .then(user => {
+      yield axios.post(`${BASE_URL}/users/signup`, {
+        name: payload.name,
+        email: payload.email,
+        password: payload.password,
+        confirmPassword: payload.confirmPassword
+      }).then(res => {
+        if (res) {
+          console.log('=', res.data)
+          localStorage.setItem("jwtToken", res.data.token)
+          // localStorage.removeItem("jwtToken")
+          loggIn.put(actions.signpSuccess(res.data))
+        } else {
+          console.log('---', res)
+        }
 
-      //     // user.user.uid
-      //     dataBase.collection("users").doc(user.user.uid).set({
-      //       email: payload.email,
-      //       uid: user.user.uid
-      //     }).then(newU => {
-      //       loggIn.put(actions.signpSuccess(newU))
-      //       console.log('Done')
-      //     }).catch(err => {
-      //       alert('Error creating user, Please try again later')
-      //       //console.log('ERRX: ', err)
-      //     })
-      //   })
+      }).catch(err => {
+        console.log('ERR: ', err.response.data)
+        loggIn.put(actions.signupFailure(err.response.data))
+      });
 
 
 
-
-
+      
 
       while (true) {
         const action = yield take(loggIn);
@@ -101,6 +117,7 @@ function* userSignup({ payload }) {
     }
 
   } catch (error) {
+    console.log('SIGNUP ERROR: ', error)
     yield put(actions.signupFailure(error));
   }
 }
@@ -111,6 +128,9 @@ function* userLogout() {
     //   .then(() => {
     //     loggOut.put(actions.logOutSuccess("Logged out"))
     //   })
+     localStorage.removeItem('jwtToken')
+
+      loggOut.put(logOutSuccess('Logged out'))
 
     while (true) {
       const action = yield take(loggOut);

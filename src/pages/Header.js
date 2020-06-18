@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { Layout, Menu, Breadcrumb } from 'antd';
 import { Link, useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
-// import { logOut } from '../redux/User/action'
+import { logOut } from '../redux/User/action'
 
 
 const { Header, Content, Sider } = Layout;
@@ -26,7 +26,7 @@ let history  = useHistory()
 
     const handleLogout = () => {
         
-        // dispatcher(logOut())
+        dispatcher(logOut())
           
 
     }
@@ -44,7 +44,7 @@ let history  = useHistory()
                 ) : (
                         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={[active]}>
 
-                            <Menu.Item key="2"> <Link to='/'>Login</Link></Menu.Item>
+                            <Menu.Item key="2"> <Link to='/login'>Login</Link></Menu.Item>
                             <Menu.Item key="3" to='/register'><Link to='/register'>Register</Link></Menu.Item>
                         </Menu>
                 )
